@@ -1,0 +1,113 @@
+mysql> select * from userinfo;
++------+---------+-------------------+---------+
+| id   | name    | email             | stateid |
++------+---------+-------------------+---------+
+| 1001 | suresh  | suresh@gmail.com  |       2 |
+| 1002 | rambabu | rambabu@gmail.com |       1 |
+| 1003 | priya   | priya@gmail.com   |       4 |
+| 1004 | harish  | harish@gmail.com  |       3 |
+| 1005 | john    | john@gmail.com    |       4 |
+| 1006 | mary    | mary@gmail.com    |       2 |
+| 1007 | tom     | tom@gmail.com     |    NULL |
+| 1008 | sara    | sara@gmail.com    |    NULL |
++------+---------+-------------------+---------+
+8 rows in set (0.00 sec)
+
+mysql> select *from statesinfo
+    -> select *from statesinfo;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'select *from statesinfo' at line 2
+mysql> select *from statesinfo;
++---------+----------------+------+
+| stateid | name           | code |
++---------+----------------+------+
+|       1 | Andhra Pradesh | AP   |
+|       2 | Telangana      | TG   |
+|       3 | Madhya Pradesh | MP   |
+|       4 | Maharastra     | MH   |
+|       5 | karnataka      | KA   |
++---------+----------------+------+
+5 rows in set (0.01 sec)
+
+mysql> select *from userinfo join statesinfo on userinfo.stateid = statesinfo.stateid;
++------+---------+-------------------+---------+---------+----------------+------+
+| id   | name    | email             | stateid | stateid | name           | code |
++------+---------+-------------------+---------+---------+----------------+------+
+| 1001 | suresh  | suresh@gmail.com  |       2 |       2 | Telangana      | TG   |
+| 1002 | rambabu | rambabu@gmail.com |       1 |       1 | Andhra Pradesh | AP   |
+| 1003 | priya   | priya@gmail.com   |       4 |       4 | Maharastra     | MH   |
+| 1004 | harish  | harish@gmail.com  |       3 |       3 | Madhya Pradesh | MP   |
+| 1005 | john    | john@gmail.com    |       4 |       4 | Maharastra     | MH   |
+| 1006 | mary    | mary@gmail.com    |       2 |       2 | Telangana      | TG   |
++------+---------+-------------------+---------+---------+----------------+------+
+6 rows in set (0.01 sec)
+
+mysql> select *from userinfo left join statesinfo on userinfo.stateid = statesinfo.stateid;
++------+---------+-------------------+---------+---------+----------------+------+
+| id   | name    | email             | stateid | stateid | name           | code |
++------+---------+-------------------+---------+---------+----------------+------+
+| 1001 | suresh  | suresh@gmail.com  |       2 |       2 | Telangana      | TG   |
+| 1002 | rambabu | rambabu@gmail.com |       1 |       1 | Andhra Pradesh | AP   |
+| 1003 | priya   | priya@gmail.com   |       4 |       4 | Maharastra     | MH   |
+| 1004 | harish  | harish@gmail.com  |       3 |       3 | Madhya Pradesh | MP   |
+| 1005 | john    | john@gmail.com    |       4 |       4 | Maharastra     | MH   |
+| 1006 | mary    | mary@gmail.com    |       2 |       2 | Telangana      | TG   |
+| 1007 | tom     | tom@gmail.com     |    NULL |    NULL | NULL           | NULL |
+| 1008 | sara    | sara@gmail.com    |    NULL |    NULL | NULL           | NULL |
++------+---------+-------------------+---------+---------+----------------+------+
+8 rows in set (0.00 sec)
+
+mysql> select *from userinfo right join statesinfo on userinfo.stateid = statesinfo.stateid;
++------+---------+-------------------+---------+---------+----------------+------+
+| id   | name    | email             | stateid | stateid | name           | code |
++------+---------+-------------------+---------+---------+----------------+------+
+| 1002 | rambabu | rambabu@gmail.com |       1 |       1 | Andhra Pradesh | AP   |
+| 1006 | mary    | mary@gmail.com    |       2 |       2 | Telangana      | TG   |
+| 1001 | suresh  | suresh@gmail.com  |       2 |       2 | Telangana      | TG   |
+| 1004 | harish  | harish@gmail.com  |       3 |       3 | Madhya Pradesh | MP   |
+| 1005 | john    | john@gmail.com    |       4 |       4 | Maharastra     | MH   |
+| 1003 | priya   | priya@gmail.com   |       4 |       4 | Maharastra     | MH   |
+| NULL | NULL    | NULL              |    NULL |       5 | karnataka      | KA   |
++------+---------+-------------------+---------+---------+----------------+------+
+7 rows in set (0.00 sec)
+
+mysql> select *from userinfo right join statesinfo on userinfo.stateid = statesinfo.stateid union select *from userinfo right join statesinfo on userinfo.stateid = statesinfo.stateid;
++------+---------+-------------------+---------+---------+----------------+------+
+| id   | name    | email             | stateid | stateid | name           | code |
++------+---------+-------------------+---------+---------+----------------+------+
+| 1002 | rambabu | rambabu@gmail.com |       1 |       1 | Andhra Pradesh | AP   |
+| 1006 | mary    | mary@gmail.com    |       2 |       2 | Telangana      | TG   |
+| 1001 | suresh  | suresh@gmail.com  |       2 |       2 | Telangana      | TG   |
+| 1004 | harish  | harish@gmail.com  |       3 |       3 | Madhya Pradesh | MP   |
+| 1005 | john    | john@gmail.com    |       4 |       4 | Maharastra     | MH   |
+| 1003 | priya   | priya@gmail.com   |       4 |       4 | Maharastra     | MH   |
+| NULL | NULL    | NULL              |    NULL |       5 | karnataka      | KA   |
++------+---------+-------------------+---------+---------+----------------+------+
+7 rows in set (0.01 sec)
+
+mysql> select *from userinfo left join statesinfo on userinfo.stateid = statesinfo.stateid union select *from userinfo right join statesinfo on userinfo.stateid = statesinfo.stateid;
++------+---------+-------------------+---------+---------+----------------+------+
+| id   | name    | email             | stateid | stateid | name           | code |
++------+---------+-------------------+---------+---------+----------------+------+
+| 1001 | suresh  | suresh@gmail.com  |       2 |       2 | Telangana      | TG   |
+| 1002 | rambabu | rambabu@gmail.com |       1 |       1 | Andhra Pradesh | AP   |
+| 1003 | priya   | priya@gmail.com   |       4 |       4 | Maharastra     | MH   |
+| 1004 | harish  | harish@gmail.com  |       3 |       3 | Madhya Pradesh | MP   |
+| 1005 | john    | john@gmail.com    |       4 |       4 | Maharastra     | MH   |
+| 1006 | mary    | mary@gmail.com    |       2 |       2 | Telangana      | TG   |
+| 1007 | tom     | tom@gmail.com     |    NULL |    NULL | NULL           | NULL |
+| 1008 | sara    | sara@gmail.com    |    NULL |    NULL | NULL           | NULL |
+| NULL | NULL    | NULL              |    NULL |       5 | karnataka      | KA   |
++------+---------+-------------------+---------+---------+----------------+------+
+9 rows in set (0.00 sec)
+
+mysql>
+
+
+
+
+
+
+
+
+
+
